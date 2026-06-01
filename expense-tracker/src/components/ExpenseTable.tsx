@@ -2,12 +2,14 @@ import type { Expense } from "../App";
 
 interface ExpenseProps {
   expenses: Expense[];
+  filters: string[];
   onDeleteExpense: (id: string) => void;
   onCategoryChange: (category: string) => void;
 }
 
 const ExpenseTable = ({
   expenses,
+  filters,
   onDeleteExpense,
   onCategoryChange,
 }: ExpenseProps) => {
@@ -18,11 +20,11 @@ const ExpenseTable = ({
           className="rounded border border-gray-300 p-2 bg-white"
           onChange={(e) => onCategoryChange && onCategoryChange(e.target.value)}
         >
-          <option value="All">All Categories</option>
-          <option value="family">Family</option>
-          <option value="food">Food</option>
-          <option value="transportation">Transportation</option>
-          <option value="entertainment">Entertainment</option>
+          {filters.map((filter) => (
+            <option key={filter} value={filter}>
+              {filter}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -40,7 +42,7 @@ const ExpenseTable = ({
           {expenses.map((expense) => (
             <tr key={expense.id} className="border-t">
               <td className="border p-2">{expense.expenseName}</td>
-              <td className="border p-2">{expense.amount}</td>
+              <td className="border p-2">€ {expense.amount}</td>
               <td className="border p-2">{expense.category}</td>
 
               <td className="border p-2">
@@ -53,13 +55,20 @@ const ExpenseTable = ({
               </td>
             </tr>
           ))}
-          <tr key="Total" className="border-t">
-            <td className="border p-2">Total:</td>
-            <td className="border p-2">
-              {expenses.reduce((sum, expense) => sum + expense.amount, 0)}
-            </td>
-          </tr>
         </tbody>
+        <tfoot>
+          <tr className="bg-green-100 font-bold">
+            <td className="border p-2">Total</td>
+            <td className="border p-2">
+              €{" "}
+              {expenses
+                .reduce((total, expense) => total + expense.amount, 0)
+                .toFixed(2)}
+            </td>
+            <td className="border p-2"></td>
+            <td className="border p-2"></td>
+          </tr>
+        </tfoot>
       </table>
 
       {expenses.length === 0 && (

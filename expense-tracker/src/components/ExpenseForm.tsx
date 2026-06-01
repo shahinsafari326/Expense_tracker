@@ -17,9 +17,10 @@ type ExpenseForm = z.infer<typeof expenseSchema>;
 
 interface ExpenseFormProps {
   onAddExpense: (expense: ExpenseForm) => void;
+  categories: string[];
 }
 
-const Form = ({ onAddExpense }: ExpenseFormProps) => {
+const Form = ({ onAddExpense, categories }: ExpenseFormProps) => {
   const {
     register,
     handleSubmit,
@@ -68,10 +69,11 @@ const Form = ({ onAddExpense }: ExpenseFormProps) => {
           className="rounded border border-gray-300 p-2 bg-white"
         >
           <option value="">Select a category</option>
-          <option value="family">Family</option>
-          <option value="food">Food</option>
-          <option value="transportation">Transportation</option>
-          <option value="entertainment">Entertainment</option>
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
         </select>
         {errors.category && (
           <p className="text-sm text-red-500">{errors.category.message}</p>

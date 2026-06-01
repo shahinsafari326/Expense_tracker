@@ -13,7 +13,7 @@ export type Expense = {
 function App() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
-
+  const filters = ["All", "family", "food", "transportation", "entertainment"];
   const filteredExpenses =
     selectedCategory === "All"
       ? expenses
@@ -41,12 +41,13 @@ function App() {
     <div className="mx-auto max-w-3xl p-6">
       <h1 className="mb-6 text-3xl font-bold">Expense Tracker</h1>
 
-      <ExpenseForm onAddExpense={addExpense} />
+      <ExpenseForm onAddExpense={addExpense} categories={filters} />
 
       <ExpenseTable
         expenses={filteredExpenses}
         onDeleteExpense={deleteExpense}
         onCategoryChange={handleCategoryChange}
+        filters={filters}
       />
     </div>
   );
