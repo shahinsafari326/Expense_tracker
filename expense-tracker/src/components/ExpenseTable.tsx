@@ -30,8 +30,8 @@ const ExpenseTable = ({
         <thead>
           <tr className="bg-gray-100">
             <th className="border p-2 text-left">Name</th>
-            <th className="border p-2 text-left">Category</th>
             <th className="border p-2 text-left">Amount</th>
+            <th className="border p-2 text-left">Category</th>
             <th className="border p-2 text-left">Action</th>
           </tr>
         </thead>
