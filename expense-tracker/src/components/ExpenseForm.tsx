@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,17 +8,22 @@ const expenseSchema = z.object({
     .string()
     .min(3, "Expense name must be at least 3 characters long"),
   category: z.string().min(1, "Category is required"),
-  amount: z.coerce
+  amount: z
     .number()
     .positive("Amount must be positive")
     .min(0.01, "Amount must be at least 0.01"),
 });
 type ExpenseForm = z.infer<typeof expenseSchema>;
 
-const Form = () => {
+interface ExpenseFormProps {
+  onAddExpense: (expense: ExpenseForm) => void;
+}
+
+const Form = ({ onAddExpense }: ExpenseFormProps) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<ExpenseForm>({
     resolver: zodResolver(expenseSchema),
@@ -27,7 +31,8 @@ const Form = () => {
 
   // handle submit
   const onSubmit = (data: ExpenseForm) => {
-    console.log(data);
+    onAddExpense(data);
+    reset();
   };
 
   const amountErrorMessage = errors.amount?.message?.includes("NaN")
